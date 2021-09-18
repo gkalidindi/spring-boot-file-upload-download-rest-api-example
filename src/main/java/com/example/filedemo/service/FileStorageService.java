@@ -10,9 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -73,8 +74,16 @@ public class FileStorageService {
             System.out.println("Absolute path location: " + targetLocation.toAbsolutePath().normalize());
             System.out.println("Relative path location: " + targetLocation);
             byte[] decodedBytes = Base64.getDecoder().decode(base64EncodedFileContent);
-            InputStream fileInputStream = new ByteArrayInputStream(decodedBytes);
-            Files.copy(fileInputStream, targetLocation.toAbsolutePath().normalize(), StandardCopyOption.REPLACE_EXISTING);
+            /*InputStream fileInputStream = new ByteArrayInputStream(decodedBytes);
+            Files.copy(fileInputStream, targetLocation.toAbsolutePath().normalize(), StandardCopyOption.REPLACE_EXISTING);*/
+            File file = new File("/app/uploadedFiles/" + fileName);
+            OutputStream os = new FileOutputStream(file);
+
+            // Starts writing the bytes in it
+            os.write(decodedBytes);
+
+            // Close the file
+            os.close();
             System.out.println("File uploaded.....");
             return fileName;
         } catch (IOException ex) {
