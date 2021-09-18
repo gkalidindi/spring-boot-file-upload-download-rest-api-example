@@ -33,7 +33,7 @@ public class FileStorageService {
         this.relativeFileStorageLocation = Paths.get(fileStorageProperties.getRelativeUploadDir());
 
         try {
-            Files.createDirectories(this.fileStorageLocation);
+            //Files.createDirectories(this.fileStorageLocation);
             Files.createDirectories(this.relativeFileStorageLocation);
         } catch (Exception ex) {
             throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
