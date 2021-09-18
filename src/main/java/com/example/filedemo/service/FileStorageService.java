@@ -74,7 +74,7 @@ public class FileStorageService {
             System.out.println("Relative path location: " + targetLocation);
             byte[] decodedBytes = Base64.getDecoder().decode(base64EncodedFileContent);
             InputStream fileInputStream = new ByteArrayInputStream(decodedBytes);
-            Files.copy(fileInputStream, targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(fileInputStream, targetLocation.toAbsolutePath().normalize(), StandardCopyOption.REPLACE_EXISTING);
             System.out.println("File uploaded.....");
             return fileName;
         } catch (IOException ex) {
