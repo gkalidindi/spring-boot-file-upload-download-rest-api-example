@@ -11,7 +11,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -25,14 +24,17 @@ import java.util.Base64;
 public class FileStorageService {
 
     private final Path fileStorageLocation;
+    private final Path relativeFileStorageLocation;
 
     @Autowired
     public FileStorageService(FileStorageProperties fileStorageProperties) {
         this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
                 .toAbsolutePath().normalize();
+        this.relativeFileStorageLocation = Paths.get(fileStorageProperties.getRelativeUploadDir());
 
         try {
             Files.createDirectories(this.fileStorageLocation);
+            Files.createDirectories(this.relativeFileStorageLocation);
         } catch (Exception ex) {
             throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
         }
@@ -66,7 +68,10 @@ public class FileStorageService {
             }
 
             // Copy file to the target location (Replacing existing file with the same name)
-            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            //Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Path targetLocation = this.relativeFileStorageLocation.resolve(fileName);
+            System.out.println("Absolute path location: " + targetLocation.toAbsolutePath().normalize());
+            System.out.println("Relative path location: " + targetLocation);
             byte[] decodedBytes = Base64.getDecoder().decode(base64EncodedFileContent);
             InputStream fileInputStream = new ByteArrayInputStream(decodedBytes);
             Files.copy(fileInputStream, targetLocation, StandardCopyOption.REPLACE_EXISTING);
