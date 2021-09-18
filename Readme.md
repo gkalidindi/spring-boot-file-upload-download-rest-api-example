@@ -33,3 +33,22 @@ You may also package the application in the form of a jar and then run the jar f
 mvn clean package
 java -jar target/file-demo-0.0.1-SNAPSHOT.jar
 ```
+
+Follow steps from below link to Deploy this app on Heroku
+```bash
+https://devcenter.heroku.com/articles/deploying-spring-boot-apps-to-heroku
+https://devcenter.heroku.com/articles/deploying-java-applications-with-the-heroku-maven-plugin
+```
+
+You can log into the Heroku app through terminal
+```bash
+heroku login
+heroku run bash -a APPNAME
+$ cd app
+
+APPNAME is the name of your Heroku application And in the folder app are your files.
+
+When you finish your commands and want to return to your terminal you can write
+
+$ exit
+```
